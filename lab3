@@ -1,0 +1,250 @@
+using System;
+
+namespace lab3
+{
+    class Program
+    {
+        static void Block4(int[,] array)
+        {
+            SwapColumns(matrix, 0, 2);
+            Console.WriteLine("Матриця після заміни стовпців:");
+            PrintMatrix(matrix);
+            SortColumnsByProduct(matrix);
+            Console.WriteLine("Матриця після сортування стовців за добутком елементів у стовпці:");
+            PrintMatrix(matrix);
+        }
+            static void Block3(int[,] array)
+        {
+            for (int i = 0; i < n - 1; i++)
+            {
+                for (int j = i + 1; j < n; j++)
+                {
+                    if (array[i, i] < array[j, j])
+                    {
+                        int temp = array[i, i];
+                        array[i, i] = array[j, j];
+                        array[j, j] = temp;
+                    }
+                }
+            }
+
+            // виводимо відсортовану матрицю
+            Console.WriteLine("Відсортована матриця:");
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    Console.Write("{0}\t", array[i, j]);
+                }
+                Console.WriteLine();
+            }
+
+            Console.ReadKey();
+        }
+        static void Block2(int[,] array)
+        {
+            int voice = int.Parse(Console.ReadLine());
+            if (voice == 1)
+            {
+                if(cols == rows)
+                {
+                    for (int i = 0; i < rows; i++)
+                {
+                    int max = matrix[i, 0];
+                    int maxIndex = 0;
+                    for (int j = 1; j < cols; j++)
+                    {
+                        if (matrix[i, j] > max)
+                        {
+                            max = matrix[i, j];
+                            maxIndex = j;
+                        }
+                    }
+
+                    int temp = matrix[i, maxIndex];
+                    matrix[i, maxIndex] = matrix[i, i];
+                    matrix[i, i] = temp;
+                }
+
+                Console.WriteLine("Змінений масив:");
+                for (int i = 0; i < rows; i++)
+                {
+                    for (int j = 0; j < cols; j++)
+                    {
+                        Console.Write("{0} ", matrix[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+                }
+                
+            }
+            else if (voice == 2)
+            {
+                for (int i = 0; i < rows; i++)
+                {
+                    int minIndex = 0;
+                    int maxIndex = 0;
+                    int minValue = array[i, 0];
+                    int maxValue = array[i, 0];
+
+                    for (int j = 1; j < cols; j++)
+                    {
+                        if (array[i, j] < minValue)
+                        {
+                            minIndex = j;
+                            minValue = array[i, j];
+                        }
+
+                        if (array[i, j] > maxValue)
+                        {
+                            maxIndex = j;
+                            maxValue = array[i, j];
+                        }
+                    }
+
+                    Swap(array, i, 0, i, minIndex);
+                    Swap(array, i, cols - 1, i, maxIndex);
+                }
+
+                PrintArray(array);
+                Console.ReadKey();
+            }
+        }
+        static void Block1(int[,] array)
+        {
+            int negativeCount = 0;
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (array[i, j] < 0)
+                    {
+                        negativeCount++;
+                    }
+                }
+            }
+            Console.WriteLine($"Кількість від'ємних елементів: {negativeCount}");
+        }
+        static int[,] FillArray(int[,] array)
+        {
+            int n;
+            do
+            {
+                Console.WriteLine("Виберіть метод заповнення масиву, 1 - вручну 2 - випадкоаво");
+                n = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введіть кількість рядків");
+                int rows = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("Введіть кількість стопвчиків");
+                int cols = Convert.ToInt32(Console.ReadLine());
+                array = new int[rows, coll];
+                switch (n)
+                {
+                    case 1:
+                        for (int i = 0; i < rows; i++)
+                        {
+                            Console.WriteLine($"Введіть {coll} елементів {i + 1} рядку(а) через пробіл");
+                            string[] elements = Console.ReadLine().Split(' ');
+                            for (int j = 0; j < cols; j++)
+                            {
+                                array[i, j] = int.Parse(elements[j]);
+                            }
+                        }
+                        break;
+                    case 2:
+                        Random rand = new Random();
+                        for (int i = 0; i < rows; i++)
+                        {
+                            for (int j = 0; j < coll; j++)
+                            {
+                                array[i, j] = rand.Next(-10, 50);
+                            }
+                        }
+                        break;
+
+                    default:
+                        Console.WriteLine("Введіть 1 або 2 при виборі заповнення масиву");
+                        break;
+                }
+            } while (n != 1 && n != 2);
+            Console.WriteLine("Заповнений массив:");
+            PrintArray(array);
+            return array;
+        }
+        static void PrintArray(int[,] array)
+        {
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int j = 0; j < array.GetLength(1); j++)
+                {
+                    Console.Write(array[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
+
+        }
+        static void Swap(int[,] array, int row1, int column1, int row2, int column2)
+        {
+            int temp = array[row1, column1];
+            array[row1, column1] = array[row2, column2];
+            array[row2, column2] = temp;
+        }
+        static void SwapColumns(int[,] matrix, int col1Index, int col2Index)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                int temp = matrix[i, col1Index];
+                matrix[i, col1Index] = matrix[i, col2Index];
+                matrix[i, col2Index] = temp;
+            }
+        }
+
+        static void SortColumnsByProduct(int[,] matrix)
+        {
+            int[] products = new int[matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
+                products[i] = GetColumnProduct(matrix, i);
+            }
+            Array.Sort(products);
+            for (int i = 0; i < products.Length / 2; i++)
+            {
+                SwapColumns(matrix, i, products.Length - i - 1);
+            }
+        }
+
+        static int GetColumnProduct(int[,] matrix, int colIndex)
+        {
+            int product = 1;
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                product *= matrix[i, colIndex];
+            }
+            return product;
+        }
+        public static void Main(string[] args)
+        {
+            int[,] array = { };
+            array = FillArray(array);
+            Console.WriteLine("Введіть 1-4 для вибору блоку");
+            int n = Convert.ToInt32(Console.ReadLine());
+            switch (n)
+            {
+                case 1:
+                    Block1(array);
+                    break;
+                case 2:
+                    Block2(array);
+                    break;
+                case 3:
+                    Block3(array);
+                    break;
+                case 4:
+                    Block4(array);
+                    break;
+                default:
+                    Console.WriteLine("Не коректно введене число");
+                    break;
+            }
+        }
+    }
+}
